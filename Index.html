@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche de Synthèse - Histoire</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6366f1;
+    --secondary: #0ea5e9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #ec4899;
+    --purple: #413BDD;
+    --bilan: #64748b;
+    
+    --bg-white: #ffffff;
+    --bg-light: #f8fafc;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    
+    --shadow-sm: 0 2px 8px rgba(108, 92, 231, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    
+    --gradient-primary: linear-gradient(100deg, var(--primary), #a5b4fc);
+    --gradient-secondary: linear-gradient(100deg, var(--secondary), #7dd3fc);
+    --gradient-success: linear-gradient(100deg, var(--success), #6ee7b7);
+    --gradient-warning: linear-gradient(100deg, var(--warning), #fbbf24);
+    --gradient-danger: linear-gradient(100deg, var(--danger), #f87171);
+    --gradient-info: linear-gradient(100deg, var(--info), #f472b6);
+    --gradient-carte: linear-gradient(100deg, var(--purple), #7490FF);
+    --gradient-bilan: linear-gradient(100deg, var(--bilan), #9EA9AD);
+    --gradient-carte-mentale: linear-gradient(100deg, #E9AC16, #fbbf24);
+  }
+
+  [data-theme="dark"] {
+    --bg-light: #292929;
+    --bg-white: #3a3a3a;
+    --text-dark: #e8e8e8;
+    --text-muted: #b8b8b8;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-bottom: 2px solid #e9ecef;
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 20px;
+  }
+
+  [data-theme="dark"] .toolbar {
+    background: linear-gradient(135deg, #2e2e2e 0%, #2e2e2e 100%);
+    border-bottom-color: #444444;
+  }
+
+  .toolbar-btn {
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+  }
+
+  .toolbar-btn:hover { transform: translateY(-2px); }
+
+  .btn-theme { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+  .btn-print { background: linear-gradient(135deg, #4BC01B, #3A9415); }
+  .btn-font { background: linear-gradient(135deg, #fd79a8, #e84393); }
+
+  /* Contenu principal */
+  .content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+  }
+
+  /* En-tête */
+  .chapter-header {
+    text-align: center;
+    margin: 0 auto 40px;
+    padding: 25px;
+    background: linear-gradient(#E6834C, #7362EA);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+  }
+
+  .theme-title {
+    font-size: 20px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 20px;
+  }
+  
+  .chapter-title {
+    margin: 12px 0;
+    font-size: 2em;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  
+  .chapter-number {
+    font-size: 20px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+
+  /* Sections */
+  .section {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+
+  .section-badge {
+    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255,255,255,0.35);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .card {
+    background: var(--bg-white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    border: 2px solid;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(108, 92, 231, 0.15);
+  }
+
+  .list-styled {
+    list-style: none;
+    padding-left: 10px;
+    margin: 0;
+  }
+
+  .list-styled li {
+    position: relative;
+    margin: var(--spacing-md) 0;
+    line-height: 1.5;
+    font-size: 0.95em;
+    padding-left: 35px;
+  }
+
+  .list-styled li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.8em;
+    line-height: 1;
+  }
+
+  /* Styles spécifiques par section */
+  .problematique {
+    background: linear-gradient(180deg, #f1efff, #e8e5ff);
+    border-left: 5px solid var(--primary);
+  }
+
+  [data-theme="dark"] .problematique {
+    background: linear-gradient(180deg, #3a3650, #2f2d45);
+  }
+
+  .problematique .section-header {
+    background: var(--gradient-primary);
+  }
+
+  .problematique-content {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-left: 4px solid var(--primary);
+  }
+
+  .problematique-highlight-box {
+    background: var(--bg-white);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .problematique-highlight-box h4 {
+    font-size: 1.1em;
+    margin: 0 0 var(--spacing-sm);
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .problematique .list-styled li::before {
+    content: '►';
+    color: var(--primary);
+  }
+
+  /* Plan */
+  .plan {
+    background: linear-gradient(180deg, #e6f3ff, #ddeeff);
+    border-left: 5px solid var(--secondary);
+  }
+
+  [data-theme="dark"] .plan {
+    background: linear-gradient(180deg, #2e3950, #242945);
+  }
+
+  .plan .section-header {
+    background: var(--gradient-secondary);
+  }
+
+  .plan .card:nth-child(1) { border-color: #00b894; }
+  .plan .card:nth-child(2) { border-color: #6c5ce7; }
+  .plan .card:nth-child(3) { border-color: #E15750; }
+
+  .plan-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .plan-card-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--text-light);
+    font-size: 1em;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+
+  .plan .card:nth-child(1) .plan-card-icon { background: #00b894; }
+  .plan .card:nth-child(2) .plan-card-icon { background: #6c5ce7; }
+  .plan .card:nth-child(3) .plan-card-icon { background: #E15750; }
+
+  .plan .card:nth-child(1) h3 { color: #00b894; }
+  .plan .card:nth-child(2) h3 { color: #6c5ce7; }
+  .plan .card:nth-child(3) h3 { color: #E15750; }
+
+  .plan-card-title {
+    font-size: 1.1em;
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 600;
+    flex-grow: 1;
+  }
+
+  /* Compétences */
+  .competences {
+    background: linear-gradient(180deg, #e6f6f0, #dff5ec);
+    border-left: 5px solid var(--success);
+  }
+
+  [data-theme="dark"] .competences {
+    background: linear-gradient(180deg, #2e4f40, #243936);
+  }
+
+  .competences .section-header {
+    background: var(--gradient-success);
+  }
+
+  .competences .card {
+    border-color: var(--success);
+  }
+
+  .competences-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1em;
+    color: var(--success);
+    text-transform: uppercase;
+  }
+
+  [data-theme="dark"] .competences-title {
+    color: #6ee7b7;
+  }
+
+  .competences .list-styled li::before {
+    color: var(--success);
+  }
+
+  /* Vocabulaire */
+  .vocabulaire {
+    background: linear-gradient(180deg, #fef7ed, #fed7aa);
+    border-left: 5px solid var(--warning);
+  }
+
+  [data-theme="dark"] .vocabulaire {
+    background: linear-gradient(180deg, #4d4230, #3d3628);
+  }
+
+  .vocabulaire .section-header {
+    background: var(--gradient-warning);
+  }
+
+  .vocabulaire .card {
+    border-color: var(--warning);
+  }
+
+  .vocabulaire .list-styled li::before {
+    color: var(--warning);
+  }
+
+  .vocab-term {
+    font-weight: 700;
+    color: var(--warning);
+    text-transform: uppercase;
+    display: inline;
+    margin-right: 8px;
+  }
+
+  .vocab-definition {
+    font-weight: 400;
+    color: var(--text-dark);
+    text-transform: none;
+    display: inline;
+  }
+
+  [data-theme="dark"] .vocab-term {
+    color: #fbbf24;
+  }
+
+  [data-theme="dark"] .vocab-definition {
+    color: #ffffff;
+  }
+
+  /* Catégories de vocabulaire */
+  .vocab-category-title {
+    font-weight: 700;
+    color: var(--warning);
+    font-size: 1.1em;
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 8px;
+  }
+
+  [data-theme="dark"] .vocab-category-title {
+    color: #fbbf24;
+  }
+
+  .vocabulaire .card:nth-child(1) { border-color: #e74c3c; }
+  .vocabulaire .card:nth-child(2) { border-color: #3498db; }
+  .vocabulaire .card:nth-child(3) { border-color: #9b59b6; }
+  .vocabulaire .card:nth-child(4) { border-color: #e67e22; }
+  .vocabulaire .card:nth-child(5) { border-color: #27ae60; }
+
+  .vocabulaire .card:nth-child(1) .vocab-category-title { color: #e74c3c; }
+  .vocabulaire .card:nth-child(2) .vocab-category-title { color: #3498db; }
+  .vocabulaire .card:nth-child(3) .vocab-category-title { color: #9b59b6; }
+  .vocabulaire .card:nth-child(4) .vocab-category-title { color: #e67e22; }
+  .vocabulaire .card:nth-child(5) .vocab-category-title { color: #27ae60; }
+
+  .vocabulaire .card:nth-child(1) .vocab-term { color: #e74c3c; }
+  .vocabulaire .card:nth-child(2) .vocab-term { color: #3498db; }
+  .vocabulaire .card:nth-child(3) .vocab-term { color: #9b59b6; }
+  .vocabulaire .card:nth-child(4) .vocab-term { color: #e67e22; }
+  .vocabulaire .card:nth-child(5) .vocab-term { color: #27ae60; }
+
+  .vocabulaire .card:nth-child(1) .list-styled li::before { color: #e74c3c; }
+  .vocabulaire .card:nth-child(2) .list-styled li::before { color: #3498db; }
+  .vocabulaire .card:nth-child(3) .list-styled li::before { color: #9b59b6; }
+  .vocabulaire .card:nth-child(4) .list-styled li::before { color: #e67e22; }
+  .vocabulaire .card:nth-child(5) .list-styled li::before { color: #27ae60; }
+
+  /* Dates */
+  .dates {
+    background: linear-gradient(180deg, #ffe8e8, #ffd6d6);
+    border-left: 5px solid var(--danger);
+  }
+
+  [data-theme="dark"] .dates {
+    background: linear-gradient(180deg, #4d3030, #3d2828);
+  }
+
+  .dates .section-header {
+    background: var(--gradient-danger);
+  }
+
+  .dates-content {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .dates-highlight-box {
+    background: var(--bg-white);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .dates-highlight-box h4 {
+    font-size: 1.1em;
+    margin: 0 0 var(--spacing-sm);
+    color: var(--danger);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .dates .list-styled li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    padding-left: 0;
+  }
+
+  .dates .list-styled li::before {
+    content: none;
+  }
+
+  .date-major {
+    font-weight: 700;
+    color: var(--danger);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .date-event {
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+
+  /* Personnages */
+  .personnages {
+    background: linear-gradient(180deg, #ffe6f0, #ffcce0);
+    border-left: 5px solid var(--info);
+  }
+
+  [data-theme="dark"] .personnages {
+    background: linear-gradient(180deg, #4d3040, #3d2836);
+  }
+
+  .personnages .section-header {
+    background: var(--gradient-info);
+  }
+
+  .personnages .card {
+    border-color: var(--info);
+  }
+
+  .personnages-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1em;
+    color: var(--info);
+    text-transform: uppercase;
+  }
+
+  [data-theme="dark"] .personnages-title {
+    color: #f472b6;
+  }
+
+  .personnages-dates {
+    font-style: italic;
+    color: #5a6571;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+  }
+
+  [data-theme="dark"] .personnages-dates {
+    color: #b8b8b8;
+  }
+
+  /* Carte */
+  .carte {
+    background: linear-gradient(180deg, #e8eaf6, #c5cae9);
+    border-left: 5px solid var(--purple);
+  }
+
+  [data-theme="dark"] .carte {
+    background: linear-gradient(180deg, #24263E, #1e2035);
+  }
+
+  .carte .section-header {
+    background: var(--gradient-carte);
+  }
+
+  .carte-content {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .carte-content h4 {
+    color: var(--purple);
+    font-size: 1.2em;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+  }
+
+  .carte-map-placeholder {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px dashed var(--purple);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+  }
+
+  [data-theme="dark"] .carte-map-placeholder {
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+  }
+
+  .carte-map-icon {
+    font-size: 3em;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.8;
+  }
+
+  /* Bilan */
+  .bilan {
+    background: linear-gradient(180deg, #eceff1, #cfd8dc);
+    border-left: 5px solid var(--bilan);
+  }
+
+  [data-theme="dark"] .bilan {
+    background: linear-gradient(180deg, #3a3d40, #2f3235);
+  }
+
+  .bilan .section-header {
+    background: var(--gradient-bilan);
+  }
+
+  .bilan-content {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .bilan-highlight-box {
+    background: var(--bg-white);
+    border: 2px solid var(--bilan);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .bilan-highlight-box h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--bilan);
+    font-weight: 600;
+    font-size: 1em;
+  }
+
+  .bilan-highlight-box h5 {
+    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+    color: var(--bilan);
+    font-weight: 600;
+    font-size: 1em;
+    text-transform: uppercase;
+  }
+
+  /* Carte mentale */
+  .carte-mentale {
+    background: linear-gradient(180deg, #fefce8, #fef3c7);
+    border-left: 5px solid #E9AC16;
+  }
+
+  [data-theme="dark"] .carte-mentale {
+    background: linear-gradient(180deg, #453f2e, #3a341f);
+  }
+
+  .carte-mentale .section-header {
+    background: var(--gradient-carte-mentale);
+  }
+
+  .carte-mentale-content {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .carte-mentale-content h4 {
+    color: #E9AC16;
+    font-size: 1.2em;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+  }
+
+  .carte-mentale-placeholder {
+    background: linear-gradient(135deg, #fefce8, #fef3c7);
+    border: 2px dashed #E9AC16;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  [data-theme="dark"] .carte-mentale-placeholder {
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+  }
+
+  .carte-mentale-icon {
+    font-size: 3em;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.8;
+    color: #E9AC16;
+  }
+
+  .carte-mentale-subtitle {
+    color: #ca8a04;
+    font-style: italic;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9em;
+  }
+
+  [data-theme="dark"] .carte-mentale-subtitle {
+    color: #fbbf24;
+  }
+
+  .carte-mentale-concepts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .concept-item {
+    background: var(--bg-white);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border-left: 4px solid #E9AC16;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .concept-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(233, 172, 22, 0.15);
+  }
+
+  .concept-title {
+    font-weight: 600;
+    color: #E9AC16;
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.9em;
+    text-transform: uppercase;
+  }
+
+  [data-theme="dark"] .concept-title {
+    color: #fbbf24;
+  }
+
+  .concept-description {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  [data-theme="dark"] .concept-description {
+    color: #b0b0b0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content {
+      padding: var(--spacing-md);
+      margin: 15px;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .card {
+      padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .section-header {
+      font-size: 1.1em;
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .chapter-title {
+      font-size: 1.5em;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body { padding-top: 70px; }
+    
+    .toolbar {
+      height: 70px;
+      padding: 8px 12px;
+      gap: 8px;
+    }
+    
+    .toolbar-btn {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .content {
+      margin: 10px;
+      padding: 15px;
+    }
+  }
+
+  /* Print */
+  @media print {
+    .toolbar { display: none !important; }
+    
+    body {
+      background: white !important;
+      padding-top: 0 !important;
+      font-size: 12pt !important;
+    }
+    
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 15pt !important;
+    }
+    
+    .chapter-header {
+      background: linear-gradient(#E6834C, #7362EA) !important;
+      color: white !important;
+      page-break-inside: avoid;
+    }
+    
+    .card {
+      background: white !important;
+      border: 1pt solid #ccc !important;
+      page-break-inside: avoid;
+    }
+  }
+
+  /* Notification simple */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: #74b9ff;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .notification.success { background: #00b894; }
+  .notification.error { background: #d63031; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(300px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+
+<body>
+<!-- Toolbar -->
+<div class="toolbar">
+  <button class="toolbar-btn btn-theme" onclick="toggleTheme()">🌗 Sombre</button>
+  <button class="toolbar-btn btn-font" onclick="changeFontSize()">🔠 Taille</button>
+  <button class="toolbar-btn btn-print" onclick="window.print()">🖨️ Imprimer</button>
+</div>
+
+<!-- Contenu principal -->
+<div class="content">
+  <!-- EN-TÊTE -->
+  <header class="chapter-header">
+    <div class="theme-title">HISTOIRE 3e — THÈME 1</div>
+    <h1 class="chapter-title">EXPÉRIENCES TOTALITAIRES ET DÉMOCRATIES FRAGILISÉES</h1>
+    <div class="chapter-number">CHAPITRE 2</div>
+  </header>
+  
+  <!-- PROBLÉMATIQUE -->
+  <section class="section problematique">
+    <div class="section-header">
+      <div class="section-badge">1</div>
+      <span>💡 PROBLÉMATIQUE</span>
+    </div>
+    <div class="problematique-content">
+      <div class="problematique-highlight-box">
+        <h4>🤔 QUESTION CENTRALE DU CHAPITRE</h4>
+        <ul class="list-styled">
+          <li><p><em><strong>Comment les régimes totalitaires soviétique et nazi se sont-ils installés et consolidés dans l'entre-deux-guerres, et pourquoi les démocraties n'ont-elles pas réussi à les contenir ?</strong></em></p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- PLAN -->
+  <section class="section plan">
+    <div class="section-header">
+      <div class="section-badge">2</div>
+      <span>📋 PLAN DU CHAPITRE</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="plan-card-header">
+          <div class="plan-card-icon">I</div>
+          <h3 class="plan-card-title">LE TOTALITARISME SOVIÉTIQUE</h3>
+        </div>
+        <div class="plan-card-content">
+          <p>Cette partie examine la mise en place progressive du régime communiste en Russie après la Révolution d'Octobre 1917. Elle étudie d'abord comment Lénine instaure la dictature du prolétariat et survit à la guerre civile pour créer l'URSS en 1921. Ensuite, elle analyse la prise de pouvoir par Staline et son système totalitaire basé sur la collectivisation économique, la propagande intensive, l'embrigadement de la population et la terreur par le NKVD et les Goulags.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="plan-card-header">
+          <div class="plan-card-icon">II</div>
+          <h3 class="plan-card-title">LE TOTALITARISME NAZI</h3>
+        </div>
+        <div class="plan-card-content">
+          <p>Cette partie retrace l'ascension d'Adolf Hitler dans le contexte traumatique de la défaite de 1918 et du Traité de Versailles. Elle explore le développement de l'idéologie nazie exposée dans Mein Kampf, les succès électoraux du NSDAP favorisés par la crise de 1929, puis l'installation de la dictature après 1933. Enfin, elle analyse les mécanismes de contrôle totalitaire (propagande, Jeunesses hitlériennes, SS, Gestapo) et la politique raciste et antisémite culminant avec la Nuit de Cristal.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="plan-card-header">
+          <div class="plan-card-icon">III</div>
+          <h3 class="plan-card-title">LES DÉMOCRATIES FRAGILISÉES</h3>
+        </div>
+        <div class="plan-card-content">
+          <p>Cette partie montre comment les démocraties européennes, notamment la France, sont déstabilisées par la crise économique de 1929 qui favorise la montée de l'extrême-droite. Elle étudie la réponse du Front populaire en France (1936-1938) avec ses réformes sociales majeures. Elle analyse ensuite l'impuissance des démocraties face à la politique expansionniste d'Hitler (réarmement, Anschluss, annexion des Sudètes) qui conduit inexorablement à la guerre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- COMPÉTENCES -->
+  <section class="section competences">
+    <div class="section-header">
+      <div class="section-badge">3</div>
+      <span>🎯 COMPÉTENCES</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="competences-title">⏳ SE REPÉRER DANS LE TEMPS</div>
+        <ul class="list-styled">
+          <li>Identifier et ordonner les grandes étapes de la montée des totalitarismes (1917-1939)</li>
+          <li>Établir des liens chronologiques entre la crise économique de 1929 et l'ascension des dictatures</li>
+          <li>Situer et mettre en relation les événements majeurs : Révolution d'Octobre, création de l'URSS, arrivée d'Hitler au pouvoir, Anschluss</li>
+          <li>Distinguer les différentes phases de consolidation des régimes totalitaires</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="competences-title">🗺️ SE REPÉRER DANS L'ESPACE</div>
+        <ul class="list-styled">
+          <li>Localiser l'URSS et identifier les territoires touchés par la collectivisation et les Goulags</li>
+          <li>Situer l'Allemagne et les territoires annexés par le IIIe Reich (Rhénanie, Autriche, Sudètes, Tchécoslovaquie)</li>
+          <li>Comprendre les enjeux territoriaux du concept nazi d'« espace vital » (Lebensraum)</li>
+          <li>Identifier les pays démocratiques fragilisés par les crises (France, Royaume-Uni)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="competences-title">📄 ANALYSER ET COMPRENDRE UN DOCUMENT</div>
+        <ul class="list-styled">
+          <li>Analyser des affiches de propagande soviétique et nazie pour identifier leurs codes visuels et leurs messages</li>
+          <li>Étudier des extraits de Mein Kampf pour comprendre l'idéologie nazie</li>
+          <li>Examiner des témoignages de déportés des Goulags et des camps de concentration</li>
+          <li>Comparer des documents pour identifier les similitudes et différences entre les deux régimes totalitaires</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="competences-title">💭 RAISONNER ET JUSTIFIER</div>
+        <ul class="list-styled">
+          <li>Expliquer comment le contexte de crise favorise l'émergence des totalitarismes</li>
+          <li>Justifier en quoi l'URSS stalinienne et l'Allemagne nazie sont des régimes totalitaires</li>
+          <li>Analyser les mécanismes de contrôle social dans les dictatures (propagande, embrigadement, terreur)</li>
+          <li>Argumenter sur les causes de l'impuissance des démocraties face aux dictatures</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- VOCABULAIRE -->
+  <section class="section vocabulaire">
+    <div class="section-header">
+      <div class="section-badge">4</div>
+      <span>📚 VOCABULAIRE</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="vocab-category-title">🚩 RÉGIME SOVIÉTIQUE</div>
+        <ul class="list-styled">
+          <li><span class="vocab-term">Bourgeoisie :</span><span class="vocab-definition">Selon Karl Marx, classe sociale des propriétaires des moyens de production (usines, terres, capital) qui exploite économiquement le prolétariat en s'appropriant la plus-value de leur travail.</span></li>
+          <li><span class="vocab-term">Prolétariat :</span><span class="vocab-definition">Selon Karl Marx, classe sociale des travailleurs qui ne possèdent que leur force de travail et sont exploités par la bourgeoisie. Le communisme vise à leur donner le pouvoir politique.</span></li>
+          <li><span class="vocab-term">Communisme :</span><span class="vocab-definition">Idéologie s'inspirant de Karl Marx visant à créer une société égalitaire en abolissant la propriété privée et en nationalisant les moyens de production.</span></li>
+          <li><span class="vocab-term">Dictature du prolétariat :</span><span class="vocab-definition">Politique de Lénine visant à ce que les travailleurs conquièrent le pouvoir par la force tout en réduisant considérablement les libertés.</span></li>
+          <li><span class="vocab-term">Collectivisation :</span><span class="vocab-definition">Organisation économique fondée sur la mise en commun des moyens de production (terres agricoles, industries).</span></li>
+          <li><span class="vocab-term">Goulag :</span><span class="vocab-definition">Camp de travail forcé et de concentration où sont déportés les opposants et suspects du régime soviétique, situés dans les régions les plus inhospitalières de l'URSS.</span></li>
+          <li><span class="vocab-term">Koulak :</span><span class="vocab-definition">Paysan propriétaire de terres agricoles opposé à la collectivisation, arrêté, déporté et souvent exécuté par le régime stalinien.</span></li>
+          <li><span class="vocab-term">NKVD :</span><span class="vocab-definition">Police politique soviétique (anciennement nommée Tchéka sous Lénine) chargée de surveiller, arrêter, torturer et exécuter les opposants au régime.</span></li>
+          <li><span class="vocab-term">Plans quinquennaux :</span><span class="vocab-definition">Objectifs de production planifiés par l'État soviétique sur des périodes de cinq ans pour industrialiser l'URSS.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="vocab-category-title">⚡ RÉGIME NAZI</div>
+        <ul class="list-styled">
+          <li><span class="vocab-term">Coup de poignard dans le dos :</span><span class="vocab-definition">Thèse complotiste diffusée par les nationalistes allemands après 1918 prétendant que la défaite allemande résulte d'une trahison interne (socialistes, communistes, Juifs) et non d'un échec militaire.</span></li>
+          <li><span class="vocab-term">IIIe Reich :</span><span class="vocab-definition">« Troisième Empire » proclamé par Hitler en 1934 après la suppression de la République de Weimar, censé succéder au Saint-Empire romain germanique et à l'Empire allemand de 1871-1918.</span></li>
+          <li><span class="vocab-term">Führer :</span><span class="vocab-definition">Titre de chef suprême porté par Adolf Hitler signifiant « le guide », symbolisant son pouvoir absolu sur l'État et la société allemande.</span></li>
+          <li><span class="vocab-term">Lebensraum :</span><span class="vocab-definition">« Espace vital » en allemand, désigne les territoires d'Europe de l'Est devant être conquis par l'Allemagne nazie pour y installer une population aryenne.</span></li>
+          <li><span class="vocab-term">Race aryenne :</span><span class="vocab-definition">Terme nazi désignant les peuples germaniques considérés comme racialement supérieurs et destinés à dominer les peuples « inférieurs » (Juifs, Tsiganes, Slaves).</span></li>
+          <li><span class="vocab-term">SA (Sections d'Assaut) :</span><span class="vocab-definition">Milice paramilitaire du parti nazi créée en 1921, chargée d'intimider et d'attaquer les opposants politiques, notamment les communistes.</span></li>
+          <li><span class="vocab-term">SS (Schutz Staffel) :</span><span class="vocab-definition">Organisation paramilitaire d'élite créée en 1925, chargée de protéger Hitler, surveiller la population et gérer les camps de concentration.</span></li>
+          <li><span class="vocab-term">Gestapo :</span><span class="vocab-definition">Police secrète de l'Allemagne nazie chargée d'arrêter, torturer et exécuter les opposants au régime.</span></li>
+          <li><span class="vocab-term">Mein Kampf :</span><span class="vocab-definition">Livre autobiographique écrit par Hitler en prison (1924) exposant l'idéologie nazie : nationalisme, racisme, antisémitisme et projet de conquête.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="vocab-category-title">⚖️ POLITIQUES TOTALITAIRES</div>
+        <ul class="list-styled">
+          <li><span class="vocab-term">Régime totalitaire :</span><span class="vocab-definition">Régime politique où le pouvoir est concentré entre les mains d'un parti unique ou d'un leader, limitant les libertés et cherchant un contrôle total de la société par la propagande, l'embrigadement et la terreur.</span></li>
+          <li><span class="vocab-term">Culte de la personnalité :</span><span class="vocab-definition">Glorification et adoration systématique du chef politique (Staline, Hitler) considéré comme un guide infaillible et salvateur.</span></li>
+          <li><span class="vocab-term">Propagande :</span><span class="vocab-definition">Diffusion systématique d'informations, vraies ou fausses, pour influencer l'opinion publique et promouvoir l'idéologie du régime via les médias, l'art et les manifestations de masse.</span></li>
+          <li><span class="vocab-term">Embrigadement :</span><span class="vocab-definition">Encadrement strict de la population, notamment des jeunes (Komsomols, Pionniers en URSS ; Jeunesses hitlériennes en Allemagne) pour assurer leur endoctrinement et loyauté.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="vocab-category-title">🔴 ÉVÉNEMENTS CLÉS</div>
+        <ul class="list-styled">
+          <li><span class="vocab-term">Grande Terreur :</span><span class="vocab-definition">Période de purges massives (1936-1938) où Staline élimine toute opposition réelle ou imaginaire via des procès truqués, arrestations et déportations.</span></li>
+          <li><span class="vocab-term">Nuit de Cristal :</span><span class="vocab-definition">Pogrom organisé par les nazis dans la nuit du 9 au 10 novembre 1938 : magasins et synagogues juifs vandalisés, Juifs assassinés, arrêtés et déportés.</span></li>
+          <li><span class="vocab-term">Lois de Nuremberg :</span><span class="vocab-definition">Lois raciales adoptées en 1935 excluant les Juifs de la citoyenneté allemande et leur interdisant certaines professions et mariages mixtes.</span></li>
+          <li><span class="vocab-term">Anschluss :</span><span class="vocab-definition">Annexion de l'Autriche par l'Allemagne nazie en mars 1938, première étape de l'expansion territoriale hitlérienne.</span></li>
+          <li><span class="vocab-term">Axe Rome-Berlin :</span><span class="vocab-definition">Alliance politique et militaire signée en mai 1936 entre l'Allemagne nazie de Hitler et l'Italie fasciste de Mussolini, consolidant le rapprochement des deux dictatures.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="vocab-category-title">🗽 DÉMOCRATIES</div>
+        <ul class="list-styled">
+          <li><span class="vocab-term">Front Populaire :</span><span class="vocab-definition">Coalition de gauche (communistes, socialistes, radicaux) qui gouverne la France de 1936 à 1938, dirigée par Léon Blum, réalisant d'importantes réformes sociales.</span></li>
+          <li><span class="vocab-term">Accords Matignon :</span><span class="vocab-definition">Accords signés en juin 1936 entre patronat et syndicats améliorant les conditions de travail : hausse des salaires, 40h hebdomadaires, congés payés.</span></li>
+          <li><span class="vocab-term">Ligues d'extrême droite :</span><span class="vocab-definition">Organisations antiparlementaires et violentes présentes en France dans les années 1930, hostiles à la IIIe République (émeute du 6 février 1934).</span></li>
+          <li><span class="vocab-term">Grande Dépression :</span><span class="vocab-definition">Crise économique mondiale débutant en octobre 1929 aux États-Unis, provoquant faillites, chômage massif et déstabilisation politique en Europe.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- DATES CLÉS -->
+  <section class="section dates">
+    <div class="section-header">
+      <div class="section-badge">5</div>
+      <span>📅 DATES CLÉS</span>
+    </div>
+    <div class="dates-content">
+      <div class="dates-highlight-box">
+        <h4>🚩 RÉVOLUTION ET URSS DE LÉNINE (1917-1924)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">Octobre 1917</span><span class="date-event">Révolution d'Octobre : les Bolcheviks de Lénine prennent le pouvoir en Russie</span></li>
+          <li><span class="date-major">1917-1921</span><span class="date-event">Guerre civile russe opposant l'Armée rouge bolchevique aux armées blanches (8 à 20 millions de morts)</span></li>
+          <li><span class="date-major">Décembre 1922</span><span class="date-event">Création de l'URSS (Union des républiques socialistes soviétiques) après la victoire de l'Armée rouge</span></li>
+          <li><span class="date-major">21 janvier 1924</span><span class="date-event">Mort de Lénine, début de la lutte pour le pouvoir entre Staline et ses rivaux</span></li>
+        </ul>
+      </div>
+      
+      <div class="dates-highlight-box">
+        <h4>⚒️ URSS STALINIENNE (1924-1939)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">1924-1928</span><span class="date-event">Staline élimine progressivement ses rivaux et prend le contrôle total du Parti communiste</span></li>
+          <li><span class="date-major">1928</span><span class="date-event">Staline lance le premier plan quinquennal et met fin à la NEP</span></li>
+          <li><span class="date-major">1929-1933</span><span class="date-event">Collectivisation forcée des terres agricoles (création des kolkhozes et sovkhozes)</span></li>
+          <li><span class="date-major">1932-1933</span><span class="date-event">Holodomor : Grande famine en Ukraine et dans le sud de l'URSS (environ 6 millions de morts)</span></li>
+          <li><span class="date-major">1936-1938</span><span class="date-event">Grande Terreur stalinienne : procès de Moscou, purges massives, déportations au Goulag</span></li>
+        </ul>
+      </div>
+      
+      <div class="dates-highlight-box">
+        <h4>⚡ MONTÉE DU NAZISME (1919-1933)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">28 juin 1919</span><span class="date-event">Signature du Traité de Versailles, humiliation allemande et source de ressentiment</span></li>
+          <li><span class="date-major">1921</span><span class="date-event">Adolf Hitler crée le NSDAP (Parti nazi) et les SA (Sections d'Assaut)</span></li>
+          <li><span class="date-major">9 nov. 1923</span><span class="date-event">Échec du putsch de Munich : Hitler est emprisonné et écrit Mein Kampf</span></li>
+          <li><span class="date-major">Oct. 1929</span><span class="date-event">Début de la crise économique mondiale qui touche durement l'Allemagne</span></li>
+          <li><span class="date-major">30 janv. 1933</span><span class="date-event">Hitler est nommé Chancelier d'Allemagne par le Président Hindenburg</span></li>
+        </ul>
+      </div>
+      
+      <div class="dates-highlight-box">
+        <h4>🔥 CONSOLIDATION DU IIIe REICH (1933-1936)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">27-28 fév. 1933</span><span class="date-event">Incendie du Reichstag : Hitler suspend les libertés et persécute les opposants</span></li>
+          <li><span class="date-major">Août 1934</span><span class="date-event">Mort de Hindenburg : Hitler devient Führer du IIIe Reich, cumulant tous les pouvoirs</span></li>
+          <li><span class="date-major">1935</span><span class="date-event">Lois de Nuremberg : discrimination légale des Juifs, retrait de la citoyenneté allemande</span></li>
+          <li><span class="date-major">Mars 1936</span><span class="date-event">Remilitarisation de la Rhénanie par l'armée allemande (violation du Traité de Versailles)</span></li>
+          <li><span class="date-major">Mai 1936</span><span class="date-event">Axe Rome-Berlin : alliance politique et militaire entre l'Allemagne nazie et l'Italie fasciste</span></li>
+          <li><span class="date-major">9-10 nov. 1938</span><span class="date-event">Nuit de Cristal : pogrom massif contre les Juifs en Allemagne</span></li>
+        </ul>
+      </div>
+      
+      <div class="dates-highlight-box">
+        <h4>🗽 UNE FRANCE EN CRISE (1934-1938)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">6 fév. 1934</span><span class="date-event">Émeute à Paris organisée par les ligues d'extrême-droite contre le Parlement</span></li>
+          <li><span class="date-major">Mai 1936</span><span class="date-event">Victoire électorale du Front populaire en France, gouvernement de Léon Blum</span></li>
+          <li><span class="date-major">Juin 1936</span><span class="date-event">Signature des Accords Matignon : congés payés, semaine de 40h, hausses salariales</span></li>
+          <li><span class="date-major">Avril 1938</span><span class="date-event">Fin du Front populaire : retrait des radicaux de la coalition face à la crise économique</span></li>
+        </ul>
+      </div>
+      
+      <div class="dates-highlight-box">
+        <h4>⚔️ LA MARCHE À LA GUERRE (1938-1939)</h4>
+        <ul class="list-styled">
+          <li><span class="date-major">Mars 1938</span><span class="date-event">Anschluss : annexion de l'Autriche par le IIIe Reich</span></li>
+          <li><span class="date-major">Sept. 1938</span><span class="date-event">Accords de Munich : France et Royaume-Uni acceptent l'annexion des Sudètes</span></li>
+          <li><span class="date-major">Mars 1939</span><span class="date-event">Annexion du reste de la Tchécoslovaquie par Hitler</span></li>
+          <li><span class="date-major">Août 1939</span><span class="date-event">Pacte germano-soviétique entre Hitler et Staline, préparant l'invasion de la Pologne</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONNAGES -->
+  <section class="section personnages">
+    <div class="section-header">
+      <div class="section-badge">6</div>
+      <span>👤 PERSONNAGES HISTORIQUES</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="personnages-title">VLADIMIR LÉNINE</div>
+        <div class="personnages-dates">(1870-1924)</div>
+        <div class="personnages-content">Leader révolutionnaire bolchevique qui dirige la Révolution d'Octobre 1917 et devient le premier dirigeant de l'URSS. Il instaure la dictature du prolétariat, mène la guerre civile russe contre les Blancs et crée les bases du régime communiste soviétique. Il met en place le communisme de guerre puis la NEP pour stabiliser l'économie. Sa mort en 1924 ouvre une lutte pour le pouvoir dont Staline sortira vainqueur.</div>
+      </div>
+      <div class="card">
+        <div class="personnages-title">JOSEPH STALINE</div>
+        <div class="personnages-dates">(1878-1953)</div>
+        <div class="personnages-content">Secrétaire général du Parti communiste à partir de 1922, il prend le pouvoir total après la mort de Lénine malgré le testament qui l'écartait. Il transforme l'URSS par la collectivisation forcée et l'industrialisation massive via les plans quinquennaux (1929-1939). Il établit un culte de la personnalité, contrôle la population par la propagande et l'embrigadement, et instaure la Grande Terreur (1936-1938) éliminant toute opposition réelle ou imaginaire via les purges, les procès de Moscou et la déportation de millions de personnes au Goulag.</div>
+      </div>
+      <div class="card">
+        <div class="personnages-title">ADOLF HITLER</div>
+        <div class="personnages-dates">(1889-1945)</div>
+        <div class="personnages-content">Fondateur du Parti nazi (NSDAP) en 1921, il développe une idéologie nationaliste, raciste et antisémite exposée dans Mein Kampf (1925). Profitant de la crise économique de 1929, il devient Chancelier en janvier 1933 puis Führer en 1934, instaurant le IIIe Reich. Il établit une dictature totalitaire contrôlant la société par la propagande (Goebbels), l'embrigadement (Jeunesses hitlériennes) et la terreur (SS, Gestapo). Il mène une politique raciste et antisémite (lois de Nuremberg 1935, Nuit de Cristal 1938) et expansionniste (Anschluss, annexions) menant à la Seconde Guerre mondiale.</div>
+      </div>
+      <div class="card">
+        <div class="personnages-title">LÉON BLUM</div>
+        <div class="personnages-dates">(1872-1950)</div>
+        <div class="personnages-content">Leader socialiste français qui devient Président du Conseil en mai 1936 après la victoire du Front populaire (coalition de gauche). Face à la montée de l'extrême-droite et de la crise économique, il met en œuvre d'importantes réformes sociales : Accords Matignon (juin 1936) avec hausse des salaires, semaine de 40 heures et 15 jours de congés payés. Son gouvernement prend fin en 1938 face aux difficultés économiques persistantes et au retrait des radicaux de la coalition.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTE -->
+  <section class="section carte">
+    <div class="section-header">
+      <div class="section-badge">7</div>
+      <span>🗺️ CARTE DE SYNTHÈSE</span>
+    </div>
+    <div class="carte-content">
+      <h4>L'Europe face aux totalitarismes et aux démocraties fragilisées (1919-1939)</h4>
+      <div class="carte-map-placeholder">
+        <img src="https://raw.githubusercontent.com/FarKaas/CHRONOSCOPE-3e-Histoire-CH2/refs/heads/main/Index.png" alt="Carte de l'Europe entre-deux-guerres" style="width: 100%; max-width: 800px; border-radius: 8px; margin: 0 auto; display: block;">
+      </div>
+      <p><strong>Source :</strong> Manuels d'Histoire 3e, cartographie historique de l'entre-deux-guerres</p>
+    </div>
+  </section>
+  
+  <!-- BILAN -->
+  <section class="section bilan">
+    <div class="section-header">
+      <div class="section-badge">8</div>
+      <span>📝 BILAN</span>
+    </div>
+    <div class="bilan-content">
+      <div class="bilan-highlight-box">
+        <h4>Synthèse générale</h4>
+        
+        <h5>🚩 L'ÉMERGENCE DES RÉGIMES TOTALITAIRES</h5>
+        <p>L'entre-deux-guerres voit l'émergence de deux régimes totalitaires majeurs en Europe : l'URSS stalinienne et l'Allemagne nazie. Ces dictatures se construisent sur les traumatismes de la Première Guerre mondiale et dans des contextes de crises profondes. En Russie, la Révolution d'Octobre 1917 et la guerre civile permettent à Lénine puis à Staline d'installer progressivement un régime communiste autoritaire. En Allemagne, l'humiliation du Traité de Versailles et la catastrophe économique de 1929 favorisent l'ascension d'Adolf Hitler qui exploite le ressentiment national et la peur du communisme. Dans les deux cas, un parti unique monopolise le pouvoir et un leader charismatique concentre tous les pouvoirs en s'appuyant sur une idéologie radicale : le communisme pour Staline, le national-socialisme raciste pour Hitler.</p>
+        
+        <h5>⚙️ LES MÉCANISMES DU CONTRÔLE TOTALITAIRE</h5>
+        <p>Ces régimes partagent des mécanismes similaires pour exercer un contrôle total sur leurs sociétés. La propagande intensive diffuse l'idéologie officielle et organise un culte de la personnalité autour du chef (Staline le « Petit père des peuples », Hitler le « Führer »). L'embrigadement systématique, notamment de la jeunesse dans des organisations dédiées (Komsomols et Pionniers en URSS, Jeunesses hitlériennes en Allemagne), vise à former des citoyens entièrement dévoués au régime. La terreur constitue le troisième pilier : polices politiques (NKVD, Gestapo), camps de concentration et de travail forcé (Goulags, camps nazis), procès truqués et exécutions de masse éliminent toute opposition. En URSS, la collectivisation forcée et les purges staliniennes causent des millions de morts. En Allemagne, la politique raciste et antisémite culmine avec les lois de Nuremberg (1935) et la Nuit de Cristal (1938), préfigurant l'horreur de la Shoah.</p>
+        
+        <h5>🗽 LA FRAGILISATION DES DÉMOCRATIES</h5>
+        <p>Face à ces dictatures, les démocraties européennes apparaissent affaiblies et divisées. La crise économique de 1929 déstabilise profondément les sociétés démocratiques : chômage de masse, montée des extrêmes politiques, instabilité gouvernementale. En France, l'émeute du 6 février 1934 révèle la menace que font peser les ligues d'extrême-droite sur la République. Le Front populaire (1936-1938) tente de répondre à cette crise par d'importantes réformes sociales (congés payés, semaine de 40h, Accords Matignon), mais ne parvient pas à redresser durablement la situation économique. Sur le plan international, les démocraties adoptent une politique d'apaisement face aux violations répétées du Traité de Versailles par Hitler : elles tolèrent le réarmement allemand, la remilitarisation de la Rhénanie (1936), l'Anschluss (1938) et acceptent même l'annexion des Sudètes lors de la conférence de Munich. Cette impuissance diplomatique encourage Hitler à poursuivre son expansion.</p>
+        
+        <h5>⚔️ LA MARCHE INEXORABLE VERS LA GUERRE</h5>
+        <p>L'expansion territoriale du IIIe Reich s'accélère à partir de 1938 sans rencontrer de véritable opposition. Après l'annexion de l'Autriche et des Sudètes, Hitler envahit le reste de la Tchécoslovaquie en mars 1939, démontrant que la politique d'apaisement a échoué. Le pacte germano-soviétique d'août 1939, alliance contre-nature entre les deux dictatures ennemies, prépare le partage de la Pologne et ouvre la voie à la Seconde Guerre mondiale. L'entre-deux-guerres s'achève ainsi dans l'échec des démocraties à contenir les totalitarismes, conduisant l'Europe et le monde vers un nouveau conflit encore plus meurtrier que le premier. Les régimes totalitaires ont démontré leur capacité à mobiliser totalement leurs sociétés et à s'affranchir de toutes les règles internationales, annonçant les horreurs à venir.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+// Variables globales
+let isDarkTheme = false;
+let currentFontSize = 16;
+
+// Mode sombre/clair
+function toggleTheme() {
+  isDarkTheme = !isDarkTheme;
+  document.body.dataset.theme = isDarkTheme ? 'dark' : '';
+  
+  const btn = document.querySelector('.btn-theme');
+  btn.textContent = isDarkTheme ? '☀️ Clair' : '🌗 Sombre';
+  
+  showNotification(isDarkTheme ? 'Mode sombre activé' : 'Mode clair activé');
+}
+
+// Taille de police
+function changeFontSize() {
+  const sizes = [14, 16, 18, 20, 22];
+  const currentIndex = sizes.indexOf(currentFontSize);
+  const nextIndex = (currentIndex + 1) % sizes.length;
+  currentFontSize = sizes[nextIndex];
+  
+  document.body.style.fontSize = currentFontSize + 'px';
+  
+  const sizeNames = ['Petit', 'Normal', 'Grand', 'Très grand', 'Extra grand'];
+  showNotification(`Taille: ${sizeNames[nextIndex]}`);
+}
+
+// Notification simple
+function showNotification(message) {
+  // Supprimer notification existante
+  const existing = document.querySelector('.notification');
+  if (existing) existing.remove();
+  
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideIn 0.3s ease-in reverse';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Initialisation simple
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('📚 Fiche de synthèse Histoire - Totalitarismes chargée');
+});
+</script>
+</body>
+</html>
